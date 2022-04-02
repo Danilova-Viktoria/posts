@@ -1,8 +1,11 @@
 import CustomBreadcrumbs from "./CustomBreadcrumbs";
+import { useLocation } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ name }) => {
+    const location = useLocation();
+
     return (
-        <CustomBreadcrumbs uri="/posts"/>
+        <CustomBreadcrumbs uri={location.pathname} name={name}/>
     )
 }
 

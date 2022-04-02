@@ -1,11 +1,15 @@
 import { Typography, Box } from "@mui/material";
-import * as React from "react";
+import { useContext } from "react";
 import CustomButton from "../components/CustomButton";
 import PostList from "../components/PostList";
+import UserContext from "../contexts/userContext";
+import PostListContext from "../contexts/postListContext";
 import MainLayout from "../layout/MainLayout";
-import { postData } from "../mocks/posts";
 
-const Posts = () => {
+const PostListView = () => {
+
+  const user = useContext(UserContext);
+  const { posts }= useContext(PostListContext);
 
   const handlePostCreateButtonClick = () => {
       console.log('Есть контакт');
@@ -16,17 +20,17 @@ const Posts = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box>
           <Typography mb="16px" variant="h6" fontWeight="bold">
-            Welcome to Our Image Board!
+            Welcome to my Image Board!
           </Typography>
           <Typography mb="16px" fontSize="14px">
-            We're stoked that you're here. 🥳
+            {user?.name}, {user?.about}
           </Typography>
         </Box>
         <CustomButton onClick={handlePostCreateButtonClick}>Create post</CustomButton>
       </Box>
-      <PostList data={postData} />
+      <PostList data={posts} />
     </MainLayout>
   );
 };
 
-export default Posts;
+export default PostListView;

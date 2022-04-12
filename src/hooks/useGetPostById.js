@@ -1,33 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import authToken from "../constants/token";
+import useLoader from "./useLoader";
 
 const useGetPostById = () => {
-    const { id } = useParams();
-    const [post, setPost] = useState(null);
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
+  const { loading, error, load } = useLoader(`/posts/${id}`);
 
-    const getPost = async () => {
+  const getPost = async () => {
+    const post = await load();
 
-        try {
-            const response = await fetch(`https://api.react-learning.ru/posts/${id}`, {
-                headers: {
-                authorization: `Bearer ${authToken}`,
-                },
-            });
+    setPost(post);
+  };
 
-            const post = await response.json();
+  useEffect(() => {
+    getPost();
+  }, [id]);
 
-            setPost(post);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    useEffect(() => {
-        getPost();
-    }, [id]);
-
-    return { post, getPost };
+  return { post, getPost, loading, error };
 };
 
 export default useGetPostById;

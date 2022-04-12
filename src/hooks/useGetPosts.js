@@ -1,31 +1,21 @@
 import { useEffect, useState } from "react";
-import authToken from "../constants/token";
+import useLoader from "./useLoader";
 
 const useGetPosts = () => {
-    const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const { loading, error, load } = useLoader("/posts");
 
-    const getPosts = async () => {
+  const getPosts = async () => {  
+    const posts = await load();
 
-        try {
-            const response = await fetch("https://api.react-learning.ru/posts", {
-                headers: {
-                authorization: `Bearer ${authToken}`,
-                },
-            });
+    setPosts(posts);
+  };
 
-            const posts = await response.json();
+  useEffect(() => {
+    getPosts();
+  }, []);
 
-            setPosts(posts);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    useEffect(() => {
-        getPosts();
-    }, []);
-
-    return { posts, getPosts };
+  return { posts, getPosts, loading, error };
 };
 
 export default useGetPosts;

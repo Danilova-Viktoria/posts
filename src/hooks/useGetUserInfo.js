@@ -1,31 +1,21 @@
 import { useEffect, useState } from "react";
-import authToken from "../constants/token";
+import useLoader from "./useLoader";
 
 const useGetUserInfo = () => {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  const { loading, error, load } = useLoader("/users/me");
 
-    const getUserInfo = async () => {
+  const getUserInfo = async () => {
+    const user = await load();
 
-        try {
-            const response = await fetch("https://api.react-learning.ru/users/me", {
-                headers: {
-                authorization: `Bearer ${authToken}`,
-                },
-            });
+    setUser(user);
+  };
 
-            const user = await response.json();
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
-            setUser(user);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    useEffect(() => {
-        getUserInfo();
-    }, []);
-
-    return user;
+  return { user, loading, error };
 };
 
 export default useGetUserInfo;

@@ -1,23 +1,15 @@
-import authToken from "../constants/token";
+import useLoader from "./useLoader";
 
-const useDeletePost = () => {
-  const deletePost = async (id) => {
-    try {
-      await fetch(
-        `https://api.react-learning.ru/posts/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-    } catch (e) {
-      console.log(e);
-    }
+const useDeletePost = (id) => {
+  const { loading, error, load } = useLoader(`/posts/${id}`, {
+    method: "DELETE",
+  });
+
+  const deletePost = async () => {
+    return await load();
   };
 
-  return deletePost;
+  return { deletePost, error, loading };
 };
 
 export default useDeletePost;

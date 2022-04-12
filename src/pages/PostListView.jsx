@@ -1,23 +1,24 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, LinearProgress } from "@mui/material";
 import { useContext } from "react";
 import CustomButton from "../components/CustomButton";
 import PostList from "../components/PostList";
 import UserContext from "../contexts/userContext";
 import PostListContext from "../contexts/postListContext";
 import MainLayout from "../layout/MainLayout";
+import { useNavigate } from "react-router-dom";
 
 const PostListView = () => {
-
-  const user = useContext(UserContext);
-  const { posts }= useContext(PostListContext);
+  const { user } = useContext(UserContext);
+  const { posts, loading } = useContext(PostListContext);
+  const navigate = useNavigate();
 
   const handlePostCreateButtonClick = () => {
-      console.log('Есть контакт');
-  }
+    navigate("create");
+  };
 
   return (
     <MainLayout>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" justifyContent="space-between" alignItems="center" gap="16px">
         <Box>
           <Typography mb="16px" variant="h6" fontWeight="bold">
             Welcome to my Image Board!
@@ -26,7 +27,12 @@ const PostListView = () => {
             {user?.name}, {user?.about}
           </Typography>
         </Box>
-        <CustomButton onClick={handlePostCreateButtonClick}>Create post</CustomButton>
+        {loading && <LinearProgress sx={{
+          flex: 1
+        }}/>}
+        <CustomButton onClick={handlePostCreateButtonClick}>
+          Create post
+        </CustomButton>
       </Box>
       <PostList data={posts} />
     </MainLayout>

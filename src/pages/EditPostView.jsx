@@ -1,17 +1,17 @@
 import * as React from "react";
 import { LinearProgress } from "@mui/material";
-import { Post } from "../components/Post";
+import { EditPost } from "../components/Post";
 import useGetPostById from "../hooks/useGetPostById";
 import MainLayout from "../layout/MainLayout";
 
-const PostView = () => {
-  const { post, loading, error } = useGetPostById();
+const EditPostView = () => {
+  const { post, loading } = useGetPostById();
 
   return (
     <MainLayout name={post?.title}>
-      {loading ? <LinearProgress /> : <Post data={post} error={error} />}
+      {loading ? <LinearProgress /> : <EditPost data={post} />}
     </MainLayout>
   );
 };
 
-export default PostView;
+export default EditPostView;

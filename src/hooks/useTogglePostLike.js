@@ -1,23 +1,14 @@
-import authToken from "../constants/token";
+import useLoader from "./useLoader";
 
-const useTogglePostLike = () => {
-  const togglePostLike = async (id, isLiked) => {
-    try {
-      await fetch(
-        `https://api.react-learning.ru/posts/likes/${id}`,
-        {
-          method: isLiked ? "PUT" : "DELETE",
-          headers: {
-            authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-    } catch (e) {
-      console.log(e);
-    }
+const useTogglePostLike = (id) => {
+
+  const { loading, error, load } = useLoader(`/posts/likes/${id}`);
+
+  const togglePostLike = async (isLiked) => {
+      await load({ method: isLiked ? "PUT" : "DELETE" });
   };
 
-  return togglePostLike;
+  return { togglePostLike, error, loading };
 };
 
 export default useTogglePostLike;

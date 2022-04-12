@@ -8,7 +8,7 @@ const CustomBreadcrumbs = ({ uri, name }) => {
     
     const items = path.map((segment, index) => {
         const text = PageNames[segment];
-        const to = path.slice(0, index + 1).join('/');
+        const to = path.slice(0, index + 1).join('/') || '/';
 
         if (index < path.length - 1) {
             return (

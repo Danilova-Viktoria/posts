@@ -11,14 +11,18 @@ import useTogglePostLike from "../../hooks/useTogglePostLike";
 import PostListContext from "../../contexts/postListContext";
 
 const PostCard = ({ data }) => {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { getPosts } = useContext(PostListContext);
 
-  const togglePostLike = useTogglePostLike();
+  const { togglePostLike, error, loading } = useTogglePostLike(data?._id);
   const onToggleLike = async (isLiked) => {
-    await togglePostLike(data._id, isLiked);
+    await togglePostLike(isLiked);
     await getPosts();
   };
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <Box
